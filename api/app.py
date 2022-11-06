@@ -16,7 +16,7 @@ def getresult():
     global transcript
     global finalized_model
     if request.method == 'POST':
-        transcript = request.form['transcript']
+        transcript = request.json['transcript']
         
     finalized_model = pickle.load(open('/Users/ayushgupta/Downloads/Programming/PhysioExpert/api/model.pkl', 'rb'))
     result = finalized_model.final_prediction(transcript)
