@@ -1,26 +1,8 @@
 import pandas as pd
 import numpy as np
-from IPython.display import SVG
-from keras.utils.vis_utils import model_to_dot
-import re
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.tokenize import sent_tokenize
-from nltk.stem import WordNetLemmatizer
-import matplotlib.pyplot as plt
-import matplotlib as mpl
 import string
 from sklearn.model_selection import train_test_split
-from dsbox.ml.neural_networks import KerasFactory
-from dsbox.ml.neural_networks.keras_factory.image_models import KerasApplicationFactory
 from dsbox.ml.neural_networks.processing import Text2Sequence
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.base import BaseEstimator, ClassifierMixin
-from sklearn.utils.validation import check_is_fitted
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.python.keras.utils.np_utils import to_categorical
 from nltk.stem.snowball import EnglishStemmer
 from dsbox.ml.neural_networks.processing.text_classification import Text2Sequence
 from dsbox.ml.neural_networks.keras_factory.text_models import CNN_LSTMFactory
@@ -33,9 +15,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import VotingClassifier
-from sklearn.model_selection import cross_val_score
 
-data = pd.read_csv('api/data.csv', usecols=['medical_specialty', 'transcription'])
+data = pd.read_csv('data.csv', usecols=['medical_specialty', 'transcription'])
 data.loc[data.medical_specialty == ' Cardiovascular / Pulmonary', "medical_specialty"] = 'Cardiovascular'
 data.loc[data.medical_specialty == ' Neurosurgery', 'medical_specialty'] = 'Neurology'
 data.loc[data.medical_specialty == ' Neurology', 'medical_specialty'] = 'Neurology'
@@ -44,10 +25,6 @@ data.loc[data.medical_specialty == ' Obstetrics / Gynecology', 'medical_specialt
 data.loc[data.medical_specialty == ' Gastroenterology', 'medical_specialty'] = 'Gastroenterology'
 data.loc[data.medical_specialty == ' Nephrology', 'medical_specialty'] = 'Gastroenterology'
 data.loc[data.medical_specialty == ' Orthopedic', 'medical_specialty'] = 'Orthopedic'
-# data.loc[data.medical_specialty == ' Surgery', 'medical_specialty'] = 'Surgery'
-# data.loc[data.medical_specialty == ' Radiology', 'medical_specialty'] = 'Radiology'
-
-# data = data[data.medical_specialty.isin(['Cardiovascular', 'Neurology', 'Urology', 'Gynecology', 'Gastroenterology', 'Orthopedic', 'Surgery', 'Radiology'])]
 data = data[data.medical_specialty.isin(['Cardiovascular', 'Neurology', 'Urology', 'Gynecology', 'Gastroenterology', 'Orthopedic'])]
 
 data = data[['transcription', 'medical_specialty']]
@@ -94,7 +71,7 @@ lstm = model.fit(X_train, y_train,
 
 vectorizer = TfidfVectorizer(analyzer='word', stop_words='english',ngram_range=(1,3), max_df=0.75,min_df=5, use_idf=True, smooth_idf=True,sublinear_tf=True, max_features=1000)
 tfIdfMat  = vectorizer.fit_transform(data['Report'].tolist())
-feature_names = sorted(vectorizer.get_feature_names())
+feature_names = sorted(vectorizer.get_feature_names_out())
 del feature_names[0:35]
 
 pca = PCA(n_components=0.45)
