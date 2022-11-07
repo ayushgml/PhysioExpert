@@ -1,30 +1,80 @@
-import React, { useRef, useState } from 'react';
-import './Signin.css';
+import React from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+export default function Signin() {
+
+    const [patient, setPatient] = useState({
+        email: "",
+        password: "",
+    })
+    const [error, setError] = useState({
+        email: "",
+        password: "",
+    })
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setPatient({
+            ...patient,
+            [name]: value
+        })
+    }
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const url = "https://iwp-backend.vercel.app/"
+        setError(validate(patient))
+        setIsSubmitting(true)
+        const data = {
+            email: patient.email,
+            password: patient.password,
+        }
+        try {
+            axios.post(url + "patient/login", data)
+            .then(res => {
+                console.log(res)
+                console.log(res.data)
+                localStorage.setItem("token", res.data.token)
+
+            })
+        }
+        catch (err) {
+            console.log(err)
+        }
+        //only if the form is valid we redirect
+        if (Object.keys(error).length === 0 && isSubmitting) {
+            //redirect to the home page
+            window.location.href = "/patient"
+        }
+        else {
+            alert("Invalid Credentials")
+        }
+
+    }
+
+    const validate = (patient) => {
+        let errors = {}
+        if (!patient.email.trim()) {
+            errors.email = "Username required"
+        }
+        if (!patient.password.trim()) {
+            errors.password = "Password required"
+        }
+        return errors
+    }
 
 
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import PatientDashboard from '../pages/patient/PatientDashboard';
-
-import { useAuthState } from 'react-firebase-hooks/auth';
-
-firebase.initializeApp({
-  apiKey: "AIzaSyALw5W-YW1K_ERIU5wW8mVbWedPQz935ok",
-  authDomain: "chatwebapp-a9396.firebaseapp.com",
-  projectId: "chatwebapp-a9396",
-  storageBucket: "chatwebapp-a9396.appspot.com",
-  messagingSenderId: "678223230076",
-  appId: "1:678223230076:web:c4829d1fb552bcaa50c5f9"
-})
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
 
 
-function SignInPage() {
+    // const redirect = () => {
+    //   console.log(patient)
+    //   // set token as patienttoken in local storage
+    //   window.location.href = "/patient"
+        
+    // }
 
-  const [user] = useAuthState(auth);
 
   return (
     <div style={{ backgroundColor: '#01282D', height: '100vh' }}>
@@ -34,49 +84,22 @@ function SignInPage() {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                     <h1 style={{ color: '#01282D', fontSize: '32px', fontWeight: 'bold' }}>Sign In</h1>
                     <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold' }}>Welcome back!</p>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' }}>
-                    {user ? <RedirectToDashboard /> : <SignIn />}
-                    </div>
+                    <form style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' }} onSubmit={handleSubmit}>
+                        <input type="text" placeholder="Email" name="email" value={patient.email} onChange={handleChange} style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', marginBottom: '10px' }} />
+                        <input type="text" placeholder="Password" name="password" value={patient.password} onChange={handleChange} style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#F5F5F5', paddingLeft: '10px', marginBottom: '10px' }} />
+                        <button type="submit" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#01282D', color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}>Sign In</button>
+                    </form>
                 </div>
             </div>
         </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "-7.5%" }}>
+            <p style={{ color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold' }}>Don't have an account? <a href="/patientsignup" style={{ textDecoration: 'none', color: '#F5F5F5' }}>Sign Up</a></p>
+        </div>
+    
+        <section>
+        
+      </section>
     </div>
 
-
-      
-
-  );
-}
-
-function RedirectToDashboard() {
-    window.location.href = "/patient";
-}
-
-
-function SignIn() {
-
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  }
-
-  return (
-    <>
-      <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
-    </>
-  )
-
-}
-
-function SignOut() {
-  return auth.currentUser && (
-    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
-
-
-
-
-
-
-export default SignInPage;

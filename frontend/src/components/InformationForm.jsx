@@ -1,20 +1,46 @@
 import {useState} from 'react'
 import APIService from '../components/APIService'
+import axios from 'axios'
 
 export default function InformationForm(props) {
-    const [ transcript, setTranscript ] = useState( '' )
+    // const [ transcript, setTranscript ] = useState( '' )
 
-    const insertTranscript = () =>{
-        APIService.InsertTranscript({transcript})
-        .then((response) => props.insertedTranscript(response))
-        .catch(error => console.log('error',error))
-    }
+    // const insertTranscript = () =>{
+    //     APIService.InsertTranscript({transcript})
+    //     .then((response) => props.insertedTranscript(response))
+    //     .catch(error => console.log('error',error))
+    // }
 
-    const handleSubmit = (event)=>{ 
+    // const handleSubmit = (event)=>{ 
+    //     event.preventDefault()
+    //     insertTranscript()
+    //     setTranscript('')
+    // }
+    const [transcript, setTranscript] = useState('')
+
+    const handleSubmit = (event) => {
         event.preventDefault()
-        insertTranscript()
-        setTranscript('')
+        const url = "http://127.0.0.1:5000/predict"
+        const data = {
+            transcript: transcript
+        }
+        try {
+            axios.post(url, data)
+            .then(res => {
+                console.log(res)
+                console.log(res.data)
+                localStorage.setItem('result', res.data)
+            })
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
+
+    const redirect = () => {
+        window.location.href = "/result"
+    }
+
 
     return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', marginTop:'10%' }}>
@@ -45,12 +71,12 @@ export default function InformationForm(props) {
                             />
                             <button
                                 style={ { width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#01282D', color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold', marginTop: '10px' } }
+                                type="submit"
+                                onClick={redirect}
+
                             >
-                                <a
-                                    style={ { textDecoration: 'none', color: '#F5F5F5' } }
-                                >
-                                    Submit
-                                </a>
+                                Submit
+                                
                             </button>
                         </form>
                     </div>

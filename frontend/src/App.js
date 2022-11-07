@@ -3,6 +3,7 @@ import Landing from './pages/Landing';
 import PatientDashboard from './pages/patient/PatientDashboard';
 import DoctorDashboard from './pages/doctor/DoctorDashboard';
 import SignIn from './components/SignIn';
+import PatientSignup from './components/PatientSignup';
 import DoctorSignin from './components/DoctorSignin';
 import DoctorSignup from './components/DoctorSignup';
 import PatientResults from './pages/patient/PatientResults';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/scheduleappointment" element={<ScheduleAppointment/>} />
         <Route path="/doctor" element={<DoctorDashboard/>} />
         <Route path="/signin" element={<SignIn/>} />
+        <Route path="/patientsignup" element={<PatientSignup/>} />
         <Route path="/doctorsignin" element={<DoctorSignin/>} />
         <Route path="/doctorsignup" element={<DoctorSignup/>} />
         
