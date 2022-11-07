@@ -17,29 +17,66 @@ export default function InformationForm(props) {
     //     setTranscript('')
     // }
     const [transcript, setTranscript] = useState('')
+    const [prediction, setPrediction] = useState('')
+    const [formData, setFormData] = useState({ 
+        Name: '',
+        Email : '',
+        transcript : '',
+    })
 
-    const handleSubmit = (event) => {
+    // handle form submission
+    // const handleSubmit = (event) => {
+    //     event.preventDefault()
+    //     console.log(formData)
+    //     // store locally
+        
+    // }
+
+    // handle form input changes
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        })
+    }
+
+    const handleSubmit = async(event) => {
         event.preventDefault()
         const url = "http://127.0.0.1:5000/predict"
         const data = {
-            transcript: transcript
+            transcript: formData.transcript
         }
         try {
-            axios.post(url, data)
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
             .then(res => {
+                setPrediction(res.data)
                 console.log(res)
-                console.log(res.data)
-                localStorage.setItem('result', res.data)
+                console.log(res.speciality)
+                localStorage.setItem( 'prediction', res.speciality )
+                // localStorage.setItem('transcription', transcript)
             })
         }
         catch (err) {
             console.log(err)
         }
+        localStorage.setItem('formData', JSON.stringify(formData))
     }
 
+            
+
     const redirect = () => {
-        window.location.href = "/result"
+        console.log(formData.transcript)
+        window.location.href = "/patientresults"
     }
+
+    
 
 
     return (
@@ -48,24 +85,16 @@ export default function InformationForm(props) {
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <p style={{ color: '#01282D', fontSize: '20px', fontWeight: 'bold' }}>Drop your transcript here</p>
                     <div style={ { display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' } }>
-                        <form onSubmit = {handleSubmit} style={ { display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' } }>
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                style={ { width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' } }
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="Email"
-                                style={ { width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px', marginTop: '10px' } }
-                                required
-                            />
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' }}>
+                {/* <form onSubmit={handleSubmit}> */}
+                <input type="text" placeholder="Name" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' }} value = {formData.Name} onChange={handleChange} name="Name" required/>
+                <input type="text" placeholder="Email" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} value = {formData.Email} onChange={handleChange} name="Email" required/>
+                
                             <input
                                 type="text-area"
                                 placeholder="Transcript"
                                 name="transcript"
-                                onChange={(e)=>setTranscript(e.target.value)}
+                                onChange={handleChange}
                                 style={ { width: '300px', height: '100px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px', marginTop: '10px' } }
                                 required
                             />

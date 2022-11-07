@@ -22,19 +22,19 @@ export default function ResultsCard() {
     //         console.log(err)
     //     }
     // }
-    const result = localStorage.getItem('result')
-    const result1 = JSON.parse(result)
-    
-
+    const result = localStorage.getItem('prediction')
+    const transcription = localStorage.getItem('transcription')
+    const [formData, setFormData] = useState(localStorage.getItem('formData') ? JSON.parse(localStorage.getItem('formData')) : []);
+    console.log(formData);
 
 
     
 
     const handleClick = (e) => {
         e.preventDefault()
-        getData()
-        console.log(doctor)
-        localStorage.setItem("doctor", JSON.stringify(doctor))
+        // getData()
+        // console.log(doctor)
+        // localStorage.setItem("doctor", JSON.stringify(doctor))
         window.location.href = "/scheduleappointment"
     }
 
@@ -46,19 +46,15 @@ export default function ResultsCard() {
                     <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'baseline', flexDirection: 'column' }}>
                         {/* Patient info */}
                         <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'baseline', flexDirection: 'column' }}>
-                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold', marginTop: '10%' }}>Patient Name: <span style={{ fontWeight: '400' }}>Thaman Muthappa</span></p>
-                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold' }}>Patient Email: <span style={{ fontWeight: '400' }}>thamanmuthappa@gmail.com</span></p>
-                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold', textAlign:'justify' }}>Patient Transcript: <span style={{ fontWeight: '400' }}>Lorem ipsum dolor sit amet. Sit sunt laborum ex officiis consequatur ut voluptatibus rerum cum libero commodi eos consequatur saepe. Aut totam nobis et omnis temporibus rem minus voluptatem sed consequatur voluptas sit galisum dolor ut velit mollitia? Qui labore distinctio sed nihil dolor sed cupiditate repellendus.
-
-                                Quo sint eius ea laudantium unde cum beatae eveniet et nostrum excepturi non architecto itaque et voluptatibus earum qui soluta saepe? Id perspiciatis ipsum non fugiat cupiditate 33 magnam velit sed provident dolorem eos voluptatem fugiat quo blanditiis asperiores non quia voluptatem! Eum maiores ipsum id magni beatae ut voluptatem autem.
-
-                                Ea eligendi nihil non blanditiis laborum et nulla optio est itaque quibusdam est incidunt voluptates aut earum cumque! Non ipsum numquam ea pariatur dolorum eos ullam fugit et tempora galisum et sint omnis rem velit asperiores qui rerum enim.</span></p>
+                        <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold', marginTop: '10%' }}>Patient Name: <span style={{ fontWeight: '400' }}>{formData.Name}</span></p>
+                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold' }}>Patient Email: <span style={{ fontWeight: '400' }}>{formData.Email}</span></p>
+                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold', textAlign:'justify' }}>Patient Transcript: <span style={{ fontWeight: '400' }}>{formData.transcript }</span></p>
                         </div>
                         {/* Results */}
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', flexDirection: 'column' }}>
                             <p style={{ color: '#', fontSize: '20px', fontWeight: 'bold', alignItems: 'center' }}>Results</p>
-                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold'}}>Recommended Specialist:  <span style={{ fontWeight: '400' }}>Thaman Muthappa</span></p>
-                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold', textAlign:'justify' }}>Recommended Treatment: <span style={{ fontWeight: '400' }}>{result1}</span></p>
+                            {/* <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold'}}>Recommended Specialist:  <span style={{ fontWeight: '400' }}>Thaman Muthappa</span></p> */}
+                            <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold', textAlign:'justify' }}>Recommended Treatment: <span style={{ fontWeight: '400' }}>{result}</span></p>
                         </div>
                     </div>
                     {/* Two buttons */}
