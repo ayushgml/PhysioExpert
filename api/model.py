@@ -71,7 +71,7 @@ lstm = model.fit(X_train, y_train,
 
 vectorizer = TfidfVectorizer(analyzer='word', stop_words='english',ngram_range=(1,3), max_df=0.75,min_df=5, use_idf=True, smooth_idf=True,sublinear_tf=True, max_features=1000)
 tfIdfMat  = vectorizer.fit_transform(data['Report'].tolist())
-feature_names = sorted(vectorizer.get_feature_names_out())
+feature_names = sorted(vectorizer.get_feature_names())
 del feature_names[0:35]
 
 pca = PCA(n_components=0.45)
