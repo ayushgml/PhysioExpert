@@ -71,7 +71,7 @@ export default function DoctorSignup() {
 
     const redirect = () => {
         console.log(doctor)
-        window.location.href = "/doctor"
+        window.location.href = "/doctorsignin"
     }
 
 
@@ -79,7 +79,7 @@ export default function DoctorSignup() {
     return (
         <div style={{ backgroundColor: '#01282D', height: '100vh' }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}>
-                <div style={{ backgroundColor: '#F5F5F5', width: '400px', height: '400px', borderRadius: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ backgroundColor: '#F5F5F5', width: '400px', height: '500px', borderRadius: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                         <h1 style={{ color: '#01282D', fontSize: '32px', fontWeight: 'bold' }}>Sign Up</h1>
                         <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold' }}>Welcome to the community!</p>
@@ -94,7 +94,7 @@ export default function DoctorSignup() {
                     </div>
                 </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "-7.5%" }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "-5%" }}>
                 <p style={{ color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold' }}>Already have an account? <a href="/doctorsignin" style={{ textDecoration: 'none', color: '#F5F5F5' }}>Sign In</a></p>
             </div>
         </div>

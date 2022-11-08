@@ -23,30 +23,57 @@ export default function Schedule() {
     // getData()
     // console.log(doctor)
 
-    const [appFormData, setAppFormData] = useState({ 
-        Name: '',
-        Specialization : '',
-        Date : '',
-        Time : '',
+    const [appointmentFormData, setAppointmentFormData] = useState({ 
+        doctorname: '',
+        email : '',
+        date : '',
+        time : '',
     })
 
     // handle form submission
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log(appFormData)
-        localStorage.setItem('appFormData', JSON.stringify(appFormData))
+        console.log(appointmentFormData)
+        localStorage.setItem('appointmentFormData', JSON.stringify(appointmentFormData))
+        const url = "https://iwp-backend.vercel.app/appointment/create"
+        const data = {
+            doctorname: appointmentFormData.doctorname,
+            email: appointmentFormData.email,
+            date: appointmentFormData.date,
+            time: appointmentFormData.time
+        }
+        try {
+            axios.post(url, data)
+            .then(res => {
+                console.log(res)
+                console.log(res.data)
+                if (res.data.success === true) {
+                    alert("Appointment request sent")
+                    window.location.href = "/patient"
+                }
+                else {
+                    alert("Appointment request failed")
+                    window.location.href = "/scheduleappointment"
+                }
+            })
+        }
+        catch (err) {
+            console.log(err)
+        }
+        
     }
 
     // handle form input changes
     const handleChange = (event) => {
-        setAppFormData({
-            ...appFormData,
+        setAppointmentFormData({
+            ...appointmentFormData,
             [event.target.name]: event.target.value
         })
     }
 
     const redirect = () => {
-        window.location.href = "/patient"
+        console.log(appointmentFormData)
+        // window.location.href = "/patient"
     }
     
   return (
@@ -55,10 +82,10 @@ export default function Schedule() {
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <p style={{ color: '#01282D', fontSize: '20px', fontWeight: 'bold' }}>Schedule Appointment</p>
                 <form style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' }} onSubmit={handleSubmit}>
-                <input type="text" placeholder="Doctor Name" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' }} value = {appFormData.Name} onChange={handleChange} name="Name" required/>
-                <input type="text" placeholder="Specialization" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} value = {appFormData.Specialization} onChange={handleChange} name="Specialization" required/>
-                <input type= "date" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} value = {appFormData.Date} onChange={handleChange} name="Date" required/>
-                <input type= "time" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} value = {appFormData.Time} onChange={handleChange} name="Time" required/>
+                <input type="text" placeholder="Doctor Name" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' } } name="doctorname" value={appointmentFormData.doctorname} onChange={handleChange} />
+                <input type="text" placeholder="Specialization" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} name="email" value={appointmentFormData.email} onChange={handleChange} />
+                <input type= "date" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} value = {appointmentFormData.date} name="date" onChange={handleChange} />
+                <input type= "time" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', fontSize: '16px' , marginTop: '10px'}} value = {appointmentFormData.time} name="time" onChange={handleChange} />
                 <button style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#01282D', color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold', marginTop: '10px' }} type="submit" onClick={redirect}>
                     Submit
                     </button>

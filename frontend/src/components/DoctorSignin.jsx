@@ -36,7 +36,17 @@ export default function DoctorSignin() {
             .then(res => {
                 console.log(res)
                 console.log(res.data)
+                if(res.data.success === true){
+                    window.location.href = "/doctor"
+                }
+                else if(res.data.success === false){
+                    alert("Invalid Credentials")
+                    window.location.href = "/doctorsignin"
+                }
+
+
                 localStorage.setItem("token", res.data.token)
+
 
             })
         }
@@ -45,11 +55,11 @@ export default function DoctorSignin() {
         }
         if (Object.keys(error).length === 0 && isSubmitting) {
           //redirect to the home page
-          window.location.href = "/doctor"
+          // window.location.href = "/doctor"
       }
-      else {
-          alert("Invalid Credentials")
-      }
+      // else {
+      //     alert("Invalid Credentials")
+      // }
 
     }
 
@@ -85,7 +95,7 @@ export default function DoctorSignin() {
                     <p style={{ color: '#01282D', fontSize: '16px', fontWeight: 'bold' }}>Welcome back!</p>
                     <form style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' }} onSubmit={handleSubmit}>
                         <input type="text" placeholder="Email" name="email" value={doctor.email} onChange={handleChange} style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', paddingLeft: '10px', marginBottom: '10px' }} />
-                        <input type="text" placeholder="Password" name="password" value={doctor.password} onChange={handleChange} style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#F5F5F5', paddingLeft: '10px', marginBottom: '10px' }} />
+                        <input type="password" placeholder="Password" name="password" value={doctor.password} onChange={handleChange} style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#F5F5F5', paddingLeft: '10px', marginBottom: '10px' }} />
                         <button type="submit" style={{ width: '300px', height: '40px', borderRadius: '8px', border: 'none', backgroundColor: '#01282D', color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }} >Sign In</button>
                     </form>
                 </div>

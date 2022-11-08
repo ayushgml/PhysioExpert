@@ -42,6 +42,13 @@ export default function PatientSignup() {
             .then(res => {
                 console.log(res)
                 console.log(res.data)
+                if(res.data.success === true){
+                    window.location.href = "/signin"
+                }
+                else if(res.data.success === false){
+                    alert("Something went wrong")
+                    window.location.href = "/signup"
+                }
             })
         }
         catch (err) {
@@ -69,7 +76,7 @@ export default function PatientSignup() {
 
     const redirect = () => {
         console.log(patient)
-        window.location.href = "/patient"
+        // window.location.href = "/signin"
     }
 
 
@@ -92,7 +99,7 @@ export default function PatientSignup() {
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "-7.5%" }}>
-                <p style={{ color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold' }}>Already have an account? <a href="/patientsignin" style={{ textDecoration: 'none', color: '#F5F5F5' }}>Sign In</a></p>
+                <p style={{ color: '#F5F5F5', fontSize: '16px', fontWeight: 'bold' }}>Already have an account? <a href="/signin" style={{ textDecoration: 'none', color: '#F5F5F5' }}>Sign In</a></p>
             </div>
         </div>
 
